@@ -1,0 +1,23 @@
+# Build output
+Cyfan.exe
+Cyfan_en.exe
+*.pdb
+
+# ffmpeg, if it was installed next to the executable
+ffmpeg.exe
+ffprobe.exe
+ffplay.exe
+ffmpeg/
+bin/
+
+# Generated at build time
+app.ico
+
+# Archives and scratch files
+*.rar
+*.zip
+*.7z
+
+# Windows
+Thumbs.db
+desktop.ini

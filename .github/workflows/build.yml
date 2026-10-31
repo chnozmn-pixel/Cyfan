@@ -1,0 +1,47 @@
+name: build
+
+# Cyfan is built with the C# compiler that ships with Windows itself
+# (.NET Framework 4.x), so no SDK has to be installed on the runner.
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        shell: pwsh
+        run: .\build.ps1
+
+      - name: Install ffmpeg (for the test suite)
+        shell: pwsh
+        run: choco install ffmpeg -y --no-progress
+
+      - name: Run the test suite
+        shell: pwsh
+        run: |
+          .\Cyfan.exe --selftest "$env:RUNNER_TEMP\cyfan_selftest" | Out-Host
+          if ($LASTEXITCODE -ne 0) { throw "tests failed with exit code $LASTEXITCODE" }
+
+      - name: Upload the executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: Cyfan
+          path: Cyfan.exe
+          if-no-files-found: error
+
+      - name: Attach the executable to the release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Cyfan.exe
+          generate_release_notes: true
