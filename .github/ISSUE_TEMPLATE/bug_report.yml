@@ -1,0 +1,57 @@
+name: Bug report
+description: Something went wrong while merging, splitting or converting
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every job prints the exact ffmpeg command line and its output in the log
+        pane. Pasting that log usually answers the question on its own.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what you got instead.
+      placeholder: |
+        I added 12 clips from a Sony AX100 and pressed MERGE.
+        The result plays for 1 minute 43 instead of 7 minutes 41.
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: The log
+      description: Copy it from the log pane at the bottom of the window.
+      render: text
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Cyfan version
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: ffmpeg
+    attributes:
+      label: ffmpeg version
+      description: The first line the log prints, or `ffmpeg -version`.
+      placeholder: "ffmpeg version 7.1 ..."
+
+  - type: input
+    id: source
+    attributes:
+      label: Source footage
+      description: Camera and format, if the problem is about particular files.
+      placeholder: "Sony AX100, XAVC S 1080p50, PCM audio"
+
+  - type: input
+    id: windows
+    attributes:
+      label: Windows version
+      placeholder: "Windows 11 24H2"
